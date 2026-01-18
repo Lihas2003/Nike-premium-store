@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NIKE | Premium Shoe</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="background-glow"></div>
+
+  <div class="user-nav">
+    <a href="auth.html" id="user-display">LOGIN / SIGN UP</a>
+  </div>
+
+  <button class="side-arrow left" onclick="rotateSlider('prev')">←</button>
+  <button class="side-arrow right" onclick="rotateSlider('next')">→</button>
+
+  <div class="top-section">
+    <div class="slider-container">
+      <div class="slider" id="main-slider">
+        <span style="--i:1;" onclick="showDetails(1, 'Nike x Carhartt WIP Air Force 1 Low', '$190')"><img src="image/shoe1.png"></span>
+        <span style="--i:2;" onclick="showDetails(2, 'Nike ISPA', '$150')"><img src="image/shoe2.png"></span>
+        <span style="--i:3;" onclick="showDetails(3, 'Nike Air Max 1 Patta Anniversary', '$120')"><img src="image/shoe3.png"></span>
+        <span style="--i:4;" onclick="showDetails(4, 'Nike air max moto 2k', '$160')"><img src="image/shoe4.png"></span>
+        <span style="--i:5;" onclick="showDetails(5, 'Nike Air Jordan 1 Retro High Blue', '$210')"><img src="image/shoe5.png"></span>
+      </div>
+    </div>
+  </div>
+
+  <div id="detail-panel" class="detail-panel">
+    <button class="close-btn" onclick="closeDetails()">✕</button>
+    <div class="panel-content">
+      <div class="product-image-container">
+        <img id="detail-img" src="" alt="Shoe Detail">
+      </div>
+      <div class="title-row">
+        <h2 id="detail-name">Shoe Name</h2>
+        <button class="view-more-btn" onclick="openFullGallery()">VIEW MORE</button>
+      </div>
+      <p id="detail-price" class="price">$0.00</p>
+      
+      <div class="option-group">
+        <label>SELECT SIZE (US)</label>
+        <div class="size-options">
+          <button class="opt-btn">8</button>
+          <button class="opt-btn active">9</button>
+          <button class="opt-btn">10</button>
+          <button class="opt-btn">11</button>
+        </div>
+      </div>
+      <button class="cart-btn" onclick="addToCart()">ADD TO CART</button>
+    </div>
+  </div>
+
+  <div id="full-gallery" class="full-gallery">
+    <button class="close-btn" onclick="closeFullGallery()">✕</button>
+    <div class="gallery-wrapper">
+        <div class="main-view-frame"><img id="gallery-main-img" src=""></div>
+        <div class="thumbnail-list" id="thumb-container"></div>
+    </div>
+  </div>
+
+  <div class="nike-logo-container"><img src="image/nike-logo.png" class="logo-image"></div>
+  <div class="author-box"><h2>TOP FIVE PREMIUM SHOES</h2><p>LATEST COLLECTION 2026</p></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

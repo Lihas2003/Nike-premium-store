@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIKE | Account Login</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .auth-container {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 380px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px);
+            padding: 40px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center; z-index: 100;
+        }
+        .auth-form h2 { margin-bottom: 25px; font-family: "ColonnaMT", serif; font-size: 2.2rem; color: #00ff88; }
+        .auth-form input {
+            width: 100%; padding: 14px; margin: 10px 0; background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1); color: white; border-radius: 8px; outline: none;
+        }
+        .auth-form button {
+            width: 100%; padding: 14px; margin-top: 20px; background: #00ff88; color: black;
+            border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
+        .toggle-link { margin-top: 20px; font-size: 0.85rem; color: #bbb; cursor: pointer; }
+        .toggle-link span { color: #00ff88; font-weight: bold; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="background-glow"></div>
+    <div class="auth-container">
+        <div id="login-box" class="auth-form">
+            <h2>SIGN IN</h2>
+            <input type="email" placeholder="Email" id="login-email">
+            <input type="password" placeholder="Password" id="login-pass">
+            <button onclick="simulateAuth('login')">LOGIN</button>
+            <p class="toggle-link" onclick="toggleAuth()">New here? <span>Create Account</span></p>
+        </div>
+        <div id="signup-box" class="auth-form hidden">
+            <h2>JOIN US</h2>
+            <input type="text" placeholder="Full Name" id="reg-name">
+            <input type="email" placeholder="Email" id="reg-email">
+            <input type="password" placeholder="Password" id="reg-pass">
+            <button onclick="simulateAuth('signup')">SIGN UP</button>
+            <p class="toggle-link" onclick="toggleAuth()">Have an account? <span>Sign In</span></p>
+        </div>
+    </div>
+    <script>
+        function toggleAuth() {
+            document.getElementById('login-box').classList.toggle('hidden');
+            document.getElementById('signup-box').classList.toggle('hidden');
+        }
+        function simulateAuth(type) {
+            localStorage.setItem('isLoggedIn', 'true');
+            alert(type === 'login' ? "Welcome back!" : "Account created successfully!");
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>
