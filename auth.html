@@ -53,18 +53,14 @@
         
         function simulateAuth(type) {
             localStorage.setItem('isLoggedIn', 'true');
-            
-            // Save Name if Signing Up
             if (type === 'signup') {
                 const name = document.getElementById('reg-name').value;
                 localStorage.setItem('userName', name || "Customer");
             } else {
-                // If logging in and no name saved, set default
                 if(!localStorage.getItem('userName')) {
                     localStorage.setItem('userName', "Valued Customer");
                 }
             }
-
             alert(type === 'login' ? "Welcome back!" : "Account created successfully!");
             window.location.href = "index.html";
         }

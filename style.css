@@ -2,7 +2,6 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
 body { height: 100vh; background: #0a0a0a url("image/Tree.png") no-repeat center/cover; overflow: hidden; color: white; display: flex; justify-content: center; }
 
-/* Allow scrolling on account page */
 body.account-body { overflow-y: auto; align-items: flex-start; padding-top: 50px; }
 
 .background-glow { position: absolute; width: 100%; height: 100%; background: radial-gradient(circle at 50% 30%, rgba(255,255,255,0.08) 0%, transparent 60%); pointer-events: none; z-index: 1; }
@@ -11,7 +10,7 @@ body.account-body { overflow-y: auto; align-items: flex-start; padding-top: 50px
 .user-nav a { color: #00ff88; text-decoration: none; font-weight: bold; letter-spacing: 1px; border: 1px solid #00ff88; padding: 8px 15px; border-radius: 5px; transition: 0.3s; background: rgba(0,0,0,0.5); }
 .user-nav a:hover { background: #00ff88; color: black; }
 
-/* SLIDER & ARROWS */
+/* SLIDER */
 .side-arrow { position: fixed; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; width: 60px; height: 60px; border-radius: 50%; z-index: 100; cursor: pointer; transition: 0.3s; }
 .side-arrow:hover { background: white; color: black; }
 .left { left: 40px; } .right { right: 40px; }
@@ -34,33 +33,60 @@ body.account-body { overflow-y: auto; align-items: flex-start; padding-top: 50px
 .view-more-btn:hover { background: #00ff88; color: black; }
 .price { color: #00ff88; font-size: 2rem; font-weight: bold; }
 
-/* CIRCULAR SIZE PICKER */
+/* INPUTS */
 .size-options { display: flex; gap: 12px; margin-top: 15px; }
 .opt-btn { width: 45px; height: 45px; border-radius: 50%; border: 1px solid #555; background: transparent; color: white; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: 0.3s; }
 .opt-btn.active { background: white; color: black; border-color: white; transform: scale(1.1); }
-
-/* ADDRESS INPUT */
 .address-input-container { margin-top: 25px; margin-bottom: 10px; }
 .address-input-container label { display: block; margin-bottom: 8px; font-weight: bold; color: #00ff88; }
-.address-box {
-    width: 100%; height: 80px; padding: 10px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white; border-radius: 8px; resize: none; font-family: inherit;
-}
+.address-box { width: 100%; height: 80px; padding: 10px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); color: white; border-radius: 8px; resize: none; font-family: inherit; }
 .address-box:focus { outline: none; border-color: #00ff88; }
-
 .cart-btn { width: 100%; padding: 18px; background: white; color: black; border: none; font-weight: bold; cursor: pointer; margin-top: 20px; transition: 0.3s; margin-bottom: 40px; }
 .cart-btn:hover { background: #00ff88; }
 .close-btn { position: absolute; top: 20px; left: 20px; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; }
 
-/* BRANDING POSITION */
+/* BRANDING */
 .nike-logo-container { position: fixed; bottom: -50px; left: 50%; transform: translateX(-50%); z-index: 10; pointer-events: none; }
 .logo-image { width: 50vw; max-width: 550px; opacity: 0.8; }
 .author-box { position: fixed; bottom: 30px; right: 30px; text-align: right; background: rgba(255,255,255,0.05); padding: 15px 25px; border-radius: 12px; backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); z-index: 20; }
 .author-box h2 { font-family: "ColonnaMT"; font-size: 1.8rem; }
 
-/* MOBILE RESPONSIVE UPDATES */
+/* ACCOUNT PAGE STYLES */
+.account-container { position: relative; width: 90%; max-width: 800px; margin-bottom: 50px; background: rgba(25, 25, 25, 0.95); backdrop-filter: blur(20px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); padding: 40px; z-index: 10; }
+.profile-section { display: flex; align-items: center; gap: 30px; padding-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 30px; }
+.profile-pic-box { width: 130px; height: 130px; border-radius: 50%; border: 3px solid #00ff88; overflow: hidden; background: #222; display: flex; justify-content: center; align-items: center; }
+.profile-info h2 { font-family: "ColonnaMT"; font-size: 2.2rem; color: #00ff88; margin-bottom: 15px; }
+#name-edit-area { display: flex; gap: 10px; margin-bottom: 15px; }
+.name-edit-input { padding: 8px 12px; border-radius: 6px; border: 1px solid #00ff88; background: rgba(255,255,255,0.1); color: white; font-size: 1.2rem; font-family: inherit; width: 250px; }
+.save-btn { padding: 8px 15px; background: #00ff88; color: black; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
+.action-buttons { display: flex; gap: 10px; margin-top: 10px; }
+.upload-btn { background: transparent; border: 1px solid #00ff88; color: #00ff88; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+.upload-btn:hover { background: #00ff88; color: black; }
+.orders-section h3 { font-family: "ColonnaMT"; font-size: 1.8rem; color: white; margin-bottom: 25px; }
+.order-list { display: flex; flex-direction: column; gap: 15px; }
+.order-item { background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-between; align-items: center; }
+.logout-btn { width: 100%; margin-top: 30px; padding: 15px; background: #ff4444; border: none; color: white; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+.logout-btn:hover { background: #d32f2f; }
+
+/* === THIS FIXES THE GALLERY VISIBILITY === */
+.full-gallery {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.95);
+    z-index: 99999 !important; /* Forces it above everything */
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+.full-gallery.active {
+    display: flex !important;
+}
+.gallery-wrapper { display: flex; flex-direction: column; align-items: center; gap: 30px; width: 90%; }
+.main-view-frame img { max-width: 80vw; max-height: 50vh; filter: drop-shadow(0 20px 60px rgba(255,255,255,0.1)); border: 2px solid #333; }
+.thumbnail-list { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
+.thumb { width: 80px; height: 80px; border: 1px solid #333; cursor: pointer; object-fit: contain; padding: 5px; background: #111; transition: 0.3s; }
+.thumb:hover { border-color: #00ff88; transform: scale(1.1); }
+
 @media (max-width: 600px) {
   .nike-logo-container { bottom: 80px; }
   .logo-image { width: 85vw; }
@@ -68,47 +94,8 @@ body.account-body { overflow-y: auto; align-items: flex-start; padding-top: 50px
   .slider span { transform: rotateY(calc(var(--i) * 72deg)) translateZ(320px); }
   .detail-panel { width: 100%; right: -100%; }
   .product-image-container { height: 200px; }
-}
-
-/* ================= CUSTOM ACCOUNT PAGE STYLES ================= */
-.account-container {
-    position: relative; width: 90%; max-width: 800px; margin-bottom: 50px;
-    background: rgba(25, 25, 25, 0.95); backdrop-filter: blur(20px);
-    border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 40px; z-index: 10;
-}
-.profile-section { display: flex; align-items: center; gap: 30px; padding-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 30px; }
-.profile-pic-box { width: 130px; height: 130px; border-radius: 50%; border: 3px solid #00ff88; overflow: hidden; background: #222; display: flex; justify-content: center; align-items: center; }
-
-/* Name Display */
-.profile-info h2 { font-family: "ColonnaMT"; font-size: 2.2rem; color: #00ff88; margin-bottom: 15px; }
-
-/* Name Input Styles */
-#name-edit-area { display: flex; gap: 10px; margin-bottom: 15px; }
-.name-edit-input {
-    padding: 8px 12px; border-radius: 6px; border: 1px solid #00ff88;
-    background: rgba(255,255,255,0.1); color: white; font-size: 1.2rem;
-    font-family: inherit; width: 250px;
-}
-.save-btn {
-    padding: 8px 15px; background: #00ff88; color: black; border: none;
-    border-radius: 6px; font-weight: bold; cursor: pointer;
-}
-
-/* Action Buttons */
-.action-buttons { display: flex; gap: 10px; margin-top: 10px; }
-.upload-btn { background: transparent; border: 1px solid #00ff88; color: #00ff88; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-.upload-btn:hover { background: #00ff88; color: black; }
-
-.orders-section h3 { font-family: "ColonnaMT"; font-size: 1.8rem; color: white; margin-bottom: 25px; }
-.order-list { display: flex; flex-direction: column; gap: 15px; }
-.order-item { background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-between; align-items: center; }
-.logout-btn { width: 100%; margin-top: 30px; padding: 15px; background: #ff4444; border: none; color: white; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-.logout-btn:hover { background: #d32f2f; }
-
-@media (max-width: 600px) { 
-    .profile-section { flex-direction: column; text-align: center; } 
-    .action-buttons { flex-direction: column; width: 100%; }
-    .name-edit-input { width: 100%; }
-    .order-item { flex-direction: column; align-items: flex-start; gap: 10px; } 
+  .profile-section { flex-direction: column; text-align: center; } 
+  .action-buttons { flex-direction: column; width: 100%; }
+  .name-edit-input { width: 100%; }
+  .order-item { flex-direction: column; align-items: flex-start; gap: 10px; } 
 }

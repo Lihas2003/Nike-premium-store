@@ -4,7 +4,6 @@ const slider = document.getElementById('main-slider');
 const panel = document.getElementById('detail-panel');
 const gallery = document.getElementById('full-gallery');
 
-// --- Check Login Status on Page Load ---
 document.addEventListener('DOMContentLoaded', () => {
     const navLink = document.getElementById('nav-link');
     if (navLink) { 
@@ -18,14 +17,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Handle Manual Slider Rotation
 function rotateSlider(dir) {
     slider.style.animation = "none"; 
     dir === 'next' ? currentRotation -= 72 : currentRotation += 72;
     slider.style.transform = `rotateY(${currentRotation}deg)`;
 }
 
-// Open Detail Panel and Populate Data
 function showDetails(id, name, price) {
     activeShoeId = id; 
     document.getElementById('detail-img').src = `image/shoe${id}.png`;
@@ -40,97 +37,89 @@ function closeDetails() {
     if (slider.style.animation !== "none") slider.style.animationPlayState = "running";
 }
 
-// Multi-Angle Gallery Logic
+// ==========================================
+//  CORRECTED GALLERY LOGIC (Matching your filenames)
+// ==========================================
 function openFullGallery() {
+    console.log("Gallery triggered for Shoe ID:", activeShoeId); 
+
     const mainImg = document.getElementById('gallery-main-img');
     const thumbContainer = document.getElementById('thumb-container');
-    mainImg.src = `image/shoe${activeShoeId}.png`;
+    const gallery = document.getElementById('full-gallery');
+
+    // Matches: 1shoe0.1.png
+    const mainPath = `image/${activeShoeId}shoe0.1.png`;
+    mainImg.src = mainPath;
+
     thumbContainer.innerHTML = '';
+    
+    // Generate thumbnails: 1shoe0.1.png to 1shoe0.3.png
     for (let i = 1; i <= 3; i++) {
         const imgPath = `image/${activeShoeId}shoe0.${i}.png`; 
         const img = document.createElement('img');
-        img.src = imgPath; img.className = 'thumb';
+        img.src = imgPath;
+        img.className = 'thumb';
         img.onclick = () => { mainImg.src = imgPath; };
+        img.onerror = function() { 
+            console.error("Missing image:", imgPath);
+            this.style.display = 'none'; 
+        };
         thumbContainer.appendChild(img);
     }
-    gallery.classList.add('active');
+
+    // Force display logic
+    gallery.style.display = 'flex'; 
+    setTimeout(() => { gallery.classList.add('active'); }, 10);
 }
 
-function closeFullGallery() { gallery.classList.remove('active'); }
+function closeFullGallery() {
+    const gallery = document.getElementById('full-gallery');
+    gallery.classList.remove('active');
+    setTimeout(() => { gallery.style.display = 'none'; }, 200); 
+}
 
-// ==========================================
-//  UPDATED ORDER SYSTEM
-// ==========================================
 function addToCart() {
-    // 1. Check Login
     if (localStorage.getItem('isLoggedIn') !== 'true') {
-        alert("Please login or sign up to place an order.");
+        alert("Please login first.");
         window.location.href = "auth.html";
         return;
     }
 
-    // 2. Collect Data
     const shoeName = document.getElementById('detail-name').innerText;
     const price = document.getElementById('detail-price').innerText;
     const address = document.getElementById('shipping-address').value;
-    const userName = localStorage.getItem('userName') || 'Valued Customer';
+    const userName = localStorage.getItem('userName') || 'Customer';
 
-    // Validate Address
-    if (!address.trim()) {
-        alert("Please enter your shipping address.");
-        return;
-    }
+    if (!address.trim()) { alert("Enter address!"); return; }
     
     let size = "Not Selected";
-    document.querySelectorAll('.opt-btn').forEach(btn => {
-        if (btn.classList.contains('active')) size = btn.innerText;
+    document.querySelectorAll('.opt-btn').forEach(b => {
+        if (b.classList.contains('active')) size = b.innerText;
     });
 
-    // -----------------------------------------------------------
-    // YOUR API KEY
-    // -----------------------------------------------------------
     const accessKey = "7a869d7c-5138-41e1-9038-b9038cc6b730"; 
-    // -----------------------------------------------------------
+    alert("Sending order...");
 
-    alert("Processing your order... please wait.");
-
-    // 3. Send Data to Web3Forms
     const formData = new FormData();
     formData.append("access_key", accessKey);
-    formData.append("Customer Name", userName);
-    formData.append("Shoe Name", shoeName);
+    formData.append("Customer", userName);
+    formData.append("Shoe", shoeName);
     formData.append("Price", price);
     formData.append("Size", size);
-    formData.append("Shipping Address", address);
+    formData.append("Address", address);
     formData.append("Date", new Date().toLocaleString());
 
-    fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formData
-    })
-    .then(response => response.json())
+    fetch("https://api.web3forms.com/submit", { method: "POST", body: formData })
+    .then(res => res.json())
     .then(data => {
         if (data.success) {
-            // 4. Save to History
-            saveOrderToHistory({
-                date: new Date().toLocaleDateString(),
-                shoeName: shoeName,
-                price: price,
-                size: size,
-                address: address
-            });
-
-            alert("SUCCESS! Order placed. Check your email.");
+            saveOrderToHistory({ date: new Date().toLocaleDateString(), shoeName, price, size, address });
+            alert("Order Placed!");
             document.getElementById('shipping-address').value = '';
             closeDetails();
-        } else {
-            alert("ERROR: " + data.message);
-        }
+        } else { alert("Error: " + data.message); }
     })
-    .catch(error => {
-        alert("ERROR: Something went wrong.");
-        console.log(error);
-    });
+    .catch(err => { alert("Error."); console.log(err); });
 }
 
 function saveOrderToHistory(order) {
@@ -139,11 +128,10 @@ function saveOrderToHistory(order) {
     localStorage.setItem('orders', JSON.stringify(orders));
 }
 
-// Size Button Interaction
 document.addEventListener('click', e => {
     if (e.target.classList.contains('opt-btn')) {
-        const parent = e.target.parentElement;
-        parent.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active'));
+        const p = e.target.parentElement;
+        p.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active'));
         e.target.classList.add('active');
     }
 });
