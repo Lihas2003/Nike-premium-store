@@ -4,7 +4,7 @@ const slider = document.getElementById('main-slider');
 const panel = document.getElementById('detail-panel');
 const gallery = document.getElementById('full-gallery');
 
-// --- 1. Check Login Status on Page Load ---
+// --- Check Login Status on Page Load ---
 document.addEventListener('DOMContentLoaded', () => {
     const navLink = document.getElementById('nav-link');
     if (navLink) { 

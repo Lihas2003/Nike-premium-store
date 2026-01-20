@@ -6,7 +6,6 @@
     <title>NIKE | Account Login</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Specific Auth Styles */
         .auth-container {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 380px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px);
@@ -51,21 +50,21 @@
             document.getElementById('login-box').classList.toggle('hidden');
             document.getElementById('signup-box').classList.toggle('hidden');
         }
-
-        // Logic to Save User Name for Account Page
+        
         function simulateAuth(type) {
             localStorage.setItem('isLoggedIn', 'true');
             
+            // Save Name if Signing Up
             if (type === 'signup') {
                 const name = document.getElementById('reg-name').value;
                 localStorage.setItem('userName', name || "Customer");
             } else {
-                // Keep existing name or set default if missing
+                // If logging in and no name saved, set default
                 if(!localStorage.getItem('userName')) {
                     localStorage.setItem('userName', "Valued Customer");
                 }
             }
-            
+
             alert(type === 'login' ? "Welcome back!" : "Account created successfully!");
             window.location.href = "index.html";
         }

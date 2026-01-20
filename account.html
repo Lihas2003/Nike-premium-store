@@ -18,10 +18,22 @@
             <div class="profile-pic-box" id="profile-pic-container">
                 <span style="font-size: 4rem; color: #555;">👤</span>
             </div>
+            
             <div class="profile-info">
-                <h2 id="user-greeting">Welcome</h2>
-                <input type="file" id="file-upload" hidden accept="image/*">
-                <button class="upload-btn" onclick="document.getElementById('file-upload').click()">Change Picture</button>
+                <div id="name-display-area">
+                    <h2 id="user-greeting">Welcome</h2>
+                </div>
+
+                <div id="name-edit-area" style="display: none;">
+                    <input type="text" id="name-input" class="name-edit-input" placeholder="Enter Name">
+                    <button class="save-btn" onclick="saveNewName()">SAVE</button>
+                </div>
+
+                <div class="action-buttons">
+                    <input type="file" id="file-upload" hidden accept="image/*">
+                    <button class="upload-btn" onclick="document.getElementById('file-upload').click()">Change Picture</button>
+                    <button class="upload-btn" onclick="toggleNameEdit()">Change Name</button>
+                </div>
             </div>
         </div>
 
@@ -36,43 +48,73 @@
     </div>
 
     <script>
-        // ACCOUNT PAGE LOGIC
         document.addEventListener('DOMContentLoaded', () => {
-            // 1. Check Login
+            // Check Login
             if (localStorage.getItem('isLoggedIn') !== 'true') {
                 window.location.href = 'auth.html';
                 return;
             }
 
-            // 2. Load Name
+            // Load Name
             const userName = localStorage.getItem('userName') || 'Customer';
             document.getElementById('user-greeting').innerText = `Welcome, ${userName}`;
 
-            // 3. Load Profile Pic
+            // Load Picture
             const savedImage = localStorage.getItem('profileImage');
             if (savedImage) {
                 const container = document.getElementById('profile-pic-container');
                 container.innerHTML = `<img src="${savedImage}" style="width:100%; height:100%; object-fit:cover;">`;
             }
 
-            // 4. Handle Picture Upload
+            // Picture Upload Handler
             document.getElementById('file-upload').addEventListener('change', (e) => {
                 const file = e.target.files[0];
                 if (file) {
                     const reader = new FileReader();
                     reader.onload = (event) => {
                         const imgData = event.target.result;
-                        const container = document.getElementById('profile-pic-container');
-                        container.innerHTML = `<img src="${imgData}" style="width:100%; height:100%; object-fit:cover;">`;
+                        document.getElementById('profile-pic-container').innerHTML = `<img src="${imgData}" style="width:100%; height:100%; object-fit:cover;">`;
                         localStorage.setItem('profileImage', imgData);
                     };
                     reader.readAsDataURL(file);
                 }
             });
 
-            // 5. Load History
             loadHistory();
         });
+
+        // Function to Toggle Edit Input
+        function toggleNameEdit() {
+            const display = document.getElementById('name-display-area');
+            const edit = document.getElementById('name-edit-area');
+            const input = document.getElementById('name-input');
+            
+            // Fill input with current name
+            const currentName = localStorage.getItem('userName') || "Customer";
+            input.value = currentName;
+
+            if (edit.style.display === 'none') {
+                edit.style.display = 'flex';
+                display.style.display = 'none';
+            } else {
+                edit.style.display = 'none';
+                display.style.display = 'block';
+            }
+        }
+
+        // Function to Save New Name
+        function saveNewName() {
+            const input = document.getElementById('name-input');
+            const newName = input.value.trim();
+
+            if (newName) {
+                localStorage.setItem('userName', newName);
+                document.getElementById('user-greeting').innerText = `Welcome, ${newName}`;
+                toggleNameEdit(); // Close edit mode
+            } else {
+                alert("Name cannot be empty!");
+            }
+        }
 
         function loadHistory() {
             const orders = JSON.parse(localStorage.getItem('orders')) || [];
