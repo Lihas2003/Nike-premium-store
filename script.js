@@ -4,6 +4,20 @@ const slider = document.getElementById('main-slider');
 const panel = document.getElementById('detail-panel');
 const gallery = document.getElementById('full-gallery');
 
+// --- 1. Check Login Status on Page Load ---
+document.addEventListener('DOMContentLoaded', () => {
+    const navLink = document.getElementById('nav-link');
+    if (navLink) { 
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+            navLink.innerText = "MY ACCOUNT";
+            navLink.href = "account.html";
+        } else {
+            navLink.innerText = "LOGIN / SIGN UP";
+            navLink.href = "auth.html";
+        }
+    }
+});
+
 // Handle Manual Slider Rotation
 function rotateSlider(dir) {
     slider.style.animation = "none"; 
@@ -30,55 +44,64 @@ function closeDetails() {
 function openFullGallery() {
     const mainImg = document.getElementById('gallery-main-img');
     const thumbContainer = document.getElementById('thumb-container');
-    
     mainImg.src = `image/shoe${activeShoeId}.png`;
     thumbContainer.innerHTML = '';
-    
     for (let i = 1; i <= 3; i++) {
         const imgPath = `image/${activeShoeId}shoe0.${i}.png`; 
         const img = document.createElement('img');
-        img.src = imgPath;
-        img.className = 'thumb';
+        img.src = imgPath; img.className = 'thumb';
         img.onclick = () => { mainImg.src = imgPath; };
         thumbContainer.appendChild(img);
     }
-    
     gallery.classList.add('active');
 }
 
 function closeFullGallery() { gallery.classList.remove('active'); }
 
 // ==========================================
-//  FINAL ORDER SYSTEM (Using Your Key)
+//  UPDATED ORDER SYSTEM
 // ==========================================
 function addToCart() {
     // 1. Check Login
     if (localStorage.getItem('isLoggedIn') !== 'true') {
-        alert("Authentication required. Redirecting to login page...");
+        alert("Please login or sign up to place an order.");
         window.location.href = "auth.html";
         return;
     }
 
-    // 2. Data Collection
+    // 2. Collect Data
     const shoeName = document.getElementById('detail-name').innerText;
     const price = document.getElementById('detail-price').innerText;
+    const address = document.getElementById('shipping-address').value;
+    const userName = localStorage.getItem('userName') || 'Valued Customer';
+
+    // Validate Address
+    if (!address.trim()) {
+        alert("Please enter your shipping address.");
+        return;
+    }
     
     let size = "Not Selected";
     document.querySelectorAll('.opt-btn').forEach(btn => {
         if (btn.classList.contains('active')) size = btn.innerText;
     });
 
-    // 3. Your Specific Access Key
+    // -----------------------------------------------------------
+    // YOUR API KEY
+    // -----------------------------------------------------------
     const accessKey = "7a869d7c-5138-41e1-9038-b9038cc6b730"; 
+    // -----------------------------------------------------------
 
-    alert("Sending order... please wait.");
+    alert("Processing your order... please wait.");
 
-    // 4. Send Data to Web3Forms
+    // 3. Send Data to Web3Forms
     const formData = new FormData();
     formData.append("access_key", accessKey);
+    formData.append("Customer Name", userName);
     formData.append("Shoe Name", shoeName);
     formData.append("Price", price);
     formData.append("Size", size);
+    formData.append("Shipping Address", address);
     formData.append("Date", new Date().toLocaleString());
 
     fetch("https://api.web3forms.com/submit", {
@@ -88,8 +111,18 @@ function addToCart() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            alert("SUCCESS! Order placed. Check your email inbox!");
-            console.log("Email sent successfully");
+            // 4. Save to History
+            saveOrderToHistory({
+                date: new Date().toLocaleDateString(),
+                shoeName: shoeName,
+                price: price,
+                size: size,
+                address: address
+            });
+
+            alert("SUCCESS! Order placed. Check your email.");
+            document.getElementById('shipping-address').value = '';
+            closeDetails();
         } else {
             alert("ERROR: " + data.message);
         }
@@ -100,7 +133,13 @@ function addToCart() {
     });
 }
 
-// Size Selection Button Interaction
+function saveOrderToHistory(order) {
+    let orders = JSON.parse(localStorage.getItem('orders')) || [];
+    orders.unshift(order); 
+    localStorage.setItem('orders', JSON.stringify(orders));
+}
+
+// Size Button Interaction
 document.addEventListener('click', e => {
     if (e.target.classList.contains('opt-btn')) {
         const parent = e.target.parentElement;
